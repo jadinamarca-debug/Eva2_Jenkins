@@ -14,3 +14,5 @@ docker run -d -p 9999:8080 --name samplerunning sampleapp
 
 # 5. Mostrar que quedó corriendo
 docker ps -a
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
