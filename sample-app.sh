@@ -1,22 +1,29 @@
 #!/bin/bash
+# Limpiar carpetas y contenedores previos
+rm -rf tempdir
+docker stop samplerunning || true
+docker rm samplerunning || true
 
-mkdir tempdir
-mkdir tempdir/templates
-mkdir tempdir/static
+mkdir -p tempdir/templates
+mkdir -p tempdir/static
 
-cp sample_app.py tempdir/.
-cp -r templates/* tempdir/templates/.
-cp -r static/* tempdir/static/.
+cp sample_app.py tempdir/
+cp -r templates/* tempdir/templates/
+cp -r static/* tempdir/static/
 
-echo "FROM python" >> tempdir/Dockerfile
-echo "RUN pip install flask" >> tempdir/Dockerfile
-echo "COPY  ./static /home/myapp/static/" >> tempdir/Dockerfile
-echo "COPY  ./templates /home/myapp/templates/" >> tempdir/Dockerfile
-echo "COPY  sample_app.py /home/myapp/" >> tempdir/Dockerfile
-echo "EXPOSE 8080" >> tempdir/Dockerfile
-echo "CMD python /home/myapp/sample_app.py" >> tempdir/Dockerfile
+# Crear el Dockerfile dentro de la carpeta temporal (o usar el de la raíz)
+echo "FROM python:3.9-slim
+RUN pip install flask
+COPY ./static /home/myapp/static/
+COPY ./templates /home/myapp/templates/
+COPY sample_app.py /home/myapp/
+EXPOSE 8080
+CMD [\"python3\", \"/home/myapp/sample_app.py\"]" > tempdir/Dockerfile
 
 cd tempdir
-docker build -t sampleapp .
-docker run -t -d -p 9999:8080 --name samplerunning sampleapp
-docker ps -a 
+# Construir la imagen con seguridad desactivada para evitar el error de hilos
+docker build --security-opt seccomp=unconfined -t sampleapp .
+
+# Ejecutar el contenedor
+docker run -d -p 9999:8080 --name samplerunning sampleapp
+docker ps -a
