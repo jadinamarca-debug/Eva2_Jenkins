@@ -8,5 +8,5 @@ def main():
     return render_template("index.html")
 
 if __name__ == "__main__":
-    # Asegúrate de que 'app' aquí se llame igual que arriba
-    app.run(host="0.0.0.0", port=8080)
+    # threaded=False obliga a Flask a usar el hilo principal para todo
+    app.run(host="0.0.0.0", port=8080, threaded=False)
