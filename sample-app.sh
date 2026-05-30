@@ -27,3 +27,10 @@ docker build --security-opt seccomp=unconfined -t sampleapp .
 # Ejecutar el contenedor
 docker run -d -p 9999:8080 --name samplerunning sampleapp
 docker ps -a
+
+
+# Cambia la línea de docker build por esta:
+docker build --security-opt seccomp=unconfined --network host -t sampleapp .
+
+# Cambia la línea de docker run por esta:
+docker run -d -p 9999:8080 --name samplerunning --security-opt seccomp=unconfined sampleapp
