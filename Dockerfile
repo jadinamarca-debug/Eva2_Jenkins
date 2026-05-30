@@ -1,11 +1,12 @@
 FROM python:3.9-slim
 
-# Definimos variables para que pip sea lo más básico y "tonto" posible
+# Forzamos modo silencioso y sin hilos desde las variables de entorno
 ENV PIP_NO_CACHE_DIR=1
 ENV PIP_PROGRESS_BAR=off
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# Instalamos flask usando la opción que evita hilos de red paralelos
-RUN pip install --progress-bar off flask
+# Usamos --quiet (o -q) para que pip no intente dibujar nada
+RUN pip install -q flask
 
 COPY ./static /home/myapp/static/
 COPY ./templates /home/myapp/templates/
