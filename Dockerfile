@@ -1,6 +1,12 @@
 FROM python:3.9-slim
-# El parámetro --progress-bar off es la clave para evitar el error de hilos
-RUN pip install --no-cache-dir --progress-bar off flask
+
+# Definimos variables para que pip sea lo más básico y "tonto" posible
+ENV PIP_NO_CACHE_DIR=1
+ENV PIP_PROGRESS_BAR=off
+
+# Instalamos flask usando la opción que evita hilos de red paralelos
+RUN pip install --progress-bar off flask
+
 COPY ./static /home/myapp/static/
 COPY ./templates /home/myapp/templates/
 COPY sample_app.py /home/myapp/
