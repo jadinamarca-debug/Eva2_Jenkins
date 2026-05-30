@@ -34,3 +34,15 @@ docker build --security-opt seccomp=unconfined --network host -t sampleapp .
 
 # Cambia la línea de docker run por esta:
 docker run -d -p 9999:8080 --name samplerunning --security-opt seccomp=unconfined sampleapp
+# ... (lo anterior se mantiene igual)
+
+cd tempdir
+
+# AGREGAMOS DOCKER_BUILDKIT=0 para usar el motor antiguo
+export DOCKER_BUILDKIT=0
+
+# Construimos usando el motor clásico
+docker build -t sampleapp .
+
+# Ejecutamos con seguridad relajada
+docker run -d -p 9999:8080 --name samplerunning sampleapp
