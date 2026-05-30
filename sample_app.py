@@ -1,13 +1,12 @@
-# Add to this file for the sample app lab
-from flask import Flask
-from flask import request
-from flask import render_template
+from flask import Flask, render_template, request
 
-sample = Flask(__name__)
+# ESTA ES LA LÍNEA QUE FALTA O ESTÁ MAL:
+app = Flask(__name__)
 
-@sample.route("/")
+@app.route("/")
 def main():
     return render_template("index.html")
 
 if __name__ == "__main__":
+    # Asegúrate de que 'app' aquí se llame igual que arriba
     app.run(host="0.0.0.0", port=8080)
